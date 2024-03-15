@@ -1,0 +1,46 @@
+{% set title = ('(Lat:' + data['mooring']['latitude']|string + ', Lon:' + data['mooring']['longitude']|string + ') -- ' + data['mooring']['deployed']|string + ' to ' + data['mooring']['recovered']|string, None, None) %}
+{% set button = {'id': 'mooringEditButton', 'class': 'btn btn-warning btn-md', 'label': 'EDIT MOORING', 'target': url_for('mooring.edit', mid=data['mooring']['id']), 'modal_target': False} %}
+{% set summary_keys = ['deployed', 'recovered', 'latitude', 'longitude', 'seafloor_depth', 'line_length'] %}
+
+{% extends "main.html" %}
+
+{% block title %}
+    {{ title[0] }}
+{% endblock %}
+
+{% block content %}
+{{ components.summary('mooringSummary', data['mooring'], summary_keys) }}
+<hr>
+<div class='float-start pe-5' style="height: 30%; width: 33.33%">
+  <h2>Organization(s)</h2>
+  <div style="overflow-y: auto;">
+    {{ components.table('organizationsTable', data['organizations']) }}
+  </div>
+</div>
+<div class='float-start pe-5' style="height: 30%; width: 33.33%">
+  <h2>Deployment</h2>
+  <div style="overflow-y: auto;">
+    {{ components.table('deploymentsTable', data['deployment']) }} 
+  </div>
+</div>
+<div class='float-start pe-5' style="height: 30%; width: 33.33%">
+  <h2>Equipment</h2>
+  <div style="overflow-y: auto;">
+    {{ components.table('equipmentsTable', data['equipment']) }} 
+  </div>
+</div>
+<div style="padding: 0px 5px 0px 5px; display: flex; flex-flow: column; background-color: rgb(235,235,235); height:100%; width: 100%; float:left; border: 3px solid white;">
+  <h2>Files</h2>
+  <div style="flex-grow: 1; overflow-y: auto;">
+    {{ components.table('mfilesTable', data['mfiles']) }} 
+  </div>
+</div>
+  {{ components.modal('mooringDeleteModal', 'Delete Mooring', mooring.delete()) }}
+{% endblock %}
+
+{% block scripts %}
+    {{ scripts.format_table('deploymentsTable', header=False) }}
+    {{ scripts.format_table('equipmentsTable', header=False) }}
+    {{ scripts.format_table('organizationsTable', header=False) }}
+    {{ scripts.format_table('mfilesTable', dom="fltip", paging=True, pagelength=25, lengthmenu=[[25, 50, 100, -1], [25, 50, 100, 'All']]) }} 
+{% endblock %}

@@ -1,0 +1,9 @@
+*__pycache__
+.idea
+.idea/*
+*Thumbs.db
+dist
+datams.egg-info
+celerybeat-schedule.dat
+celerybeat-schedule.bak
+celerybeat-schedule.dir

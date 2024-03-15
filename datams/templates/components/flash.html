@@ -1,0 +1,12 @@
+{#
+  No parameters expected.  Add this component to templates to display any flashed messages.  
+#}
+<div id="flash">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p class="text-danger">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>

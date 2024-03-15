@@ -1,0 +1,45 @@
+{% set title = (data['deployment']['location'] + " " + data['deployment']['date']|string, None, data['deployment']['organizations']) %}
+{% set button = {'id': 'deploymentEditButton', 'class': 'btn btn-warning btn-md', 'label': 'EDIT DEPLOYMENT', 'target': url_for('deployment.edit', did=data['deployment']['id']), 'modal_target': False} %}
+
+{% extends "main.html" %}
+
+{% block title %}
+    {{ title[0] }} Details
+{% endblock %}
+
+{% block content %}
+<div style="width: 100%; height:70%;">
+  <div style="padding: 0px 5px 0px 5px; display: flex; flex-flow: column; background-color: rgb(235,235,235); float:left;  height: 642px; width: 20%; border-bottom: 5px solid white;">
+    <h2>Equipment</h2>
+    <div style="flex-grow: 1; overflow-y: auto;">
+    {{ components.table('equipmentTable', data['equipment'], columns=['name', 'url']) }}
+    </div>
+  </div>
+  <div style="padding: 0px 5px 0px 5px; background-color: rgb(235,235,235); float:left; width: 80%; border-bottom: 5px solid white; border-left: 5px solid white;">
+    <h2>Moorings</h2>
+    <div id="mooringMap" style="width: 60%; height: 600px; float:left; display:inline;"></div>
+    <div style="overflow-y: auto; width:40%; height: 600px; float:left;">
+      {{ components.accordian('mfilesAccordian', data['mfiles']) }}
+    </div>
+  </div>
+</div>
+<div style="padding: 0px 5px 0px 5px; display: flex; flex-flow: column; background-color: rgb(235,235,235); width: 100%; max-height: 470px;">
+  <h2>Documents</h2>
+  <div style="max-height: 415px; overflow-y: auto;">
+  {{ components.table('dfilesTable', data['dfiles']) }}
+  </div>
+</div>
+<div style="padding: 0px 5px 0px 5px; background-color: rgb(235,235,235); width: 100%; border-top: 5px solid white;">
+  <h2>Contacts</h2>
+  <div style="overflow-x: auto; width: 100%;">
+  {{ components.contactcards2(data['contacts']) }}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ scripts.format_map('mooringMap', data['map_center'], data['map_zoom'], data['moorings']) }}
+    {{ scripts.format_table('dfilesTable') }}
+    {{ scripts.format_table('equipmentTable') }}
+    {{ scripts.format_accordian('mfilesAccordian', data['mfiles']) }}
+{% endblock %}
